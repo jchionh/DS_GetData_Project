@@ -37,6 +37,32 @@ merged_data <- within(merged_data, activity <- V2)
 # now we can drop the V2 column
 merged_data$V2 <- NULL
 
+## 4. Appropriately labels the data set with descriptive variable names. 
 
+# already done this in Part 1 with the following commands
+# assign column names to the merged data
+# features <- read.table("UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
+# names(merged_data) <- c("activity", "subject", features$V2)
 
+## 5. From the data set in step 4, creates a second, independent tidy data set with the average of 
+##    each variable for each activity and each subject.
+
+# create the avg_data frame and compute the first column (the third) of numeric data "tBodyAcc-mean()-X"
+# so that we have a data frame that exist with the first column of numeric average data done
+# and have the correct number of rows with average values
+avg_data <- aggregate(formula = merged_data[,3] ~ merged_data$activity + merged_data$subject, data = merged_data, FUN = mean)
+
+# now, do the same for the next column (fourth) to the last column
+for (column in 4:ncol(merged_data)) {
+  # assign the next column the value of the average when we aggregated by activity and subject, the average of the values
+  # we use [,3] at the end, because the computed average is the 3rd column of this aggregate
+  avg_data[,column] <- aggregate(formula = merged_data[,column] ~ merged_data$activity + merged_data$subject, data = merged_data, FUN = mean)[,3]
+}
+
+# now assign the column names to avg_data
+names(avg_data) <- names(merged_data)
+# then sort them nicely by activity and subject
+avg_data <- arrange(avg_data, activity, subject)
+# write the table out to file
+write.table(avg_data, file = "./tidy_data_set.txt", row.name=FALSE)
 
