@@ -11,4 +11,7 @@ This is the Project for Getting and Cleaning data
  
 - `tidy_data_set.txt` This is the output file for the project, which is also the final output of the `run_analysis.R` script.
  
+## Dependencies
+
+`run_analysis.R` script has a dependency on the dplyr library. Please make sure to install the dplyr package and load the library for the script to run.
 
