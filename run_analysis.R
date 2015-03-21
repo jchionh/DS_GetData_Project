@@ -22,5 +22,11 @@ features <- read.table("UCI HAR Dataset/features.txt", stringsAsFactors = FALSE)
 names(merged_data) <- c("activity", "subject", features$V2)
 
 
+## 2. Extracts only the measurements on the mean and standard deviation for each measurement. 
+# identify only the column names with mean() or std()
+sel_features <- features$V2[grep("(mean|std)\\(", features$V2)]
+# reduce our merged data to only the features we want -- mean() and std()
+merged_data <- merged_data[,c("activity", "subject", sel_features)]
+
 
 
