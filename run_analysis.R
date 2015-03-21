@@ -28,5 +28,15 @@ sel_features <- features$V2[grep("(mean|std)\\(", features$V2)]
 # reduce our merged data to only the features we want -- mean() and std()
 merged_data <- merged_data[,c("activity", "subject", sel_features)]
 
+## 3. Uses descriptive activity names to name the activities in the data set.
+activities <- read.table("UCI HAR Dataset/activity_labels.txt", stringsAsFactors = FALSE)
+# merge both data and activity labels on the coded activity number (V1), as a first step 
+merged_data <- merge(merged_data, activities, by.x = "activity", by.y = "V1")
+# now, assign the activity column the values of the V2, which is the description of the activity
+merged_data <- within(merged_data, activity <- V2)
+# now we can drop the V2 column
+merged_data$V2 <- NULL
+
+
 
 
